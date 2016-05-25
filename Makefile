@@ -1,12 +1,14 @@
 container_name := elasticsearch-curator
 container_registry := quay.io/nordstrom
-curator_version := 3.5.1
+curator_version := 4.0.0a3
 container_release := $(curator_version)
 
 .PHONY: build/image tag/image push/image
 
 build/image:
-	docker build -t $(container_name) .
+	docker build \
+	--build-arg CURATOR_RELEASE=$(curator_version) \
+	-t $(container_name) .
 
 tag/image: build/image
 	docker tag $(container_name) $(container_registry)/$(container_name):$(container_release)
